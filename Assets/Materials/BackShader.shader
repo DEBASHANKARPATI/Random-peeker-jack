@@ -45,15 +45,20 @@
 
 			fixed4 outline = tex2D(_OutlineTex, IN.uv_MainTex);
 
-			outline.r = pow(sin(outline.g*8*_Time),20)+ pow(cos(outline.r * 8 * _Time), 20);
-
-            o.Albedo = c.rgb+outline.rgb;
-		
+			if (outline.r == 1)
+			{
+				o.Albedo.bg = IN.uv_MainTex[0];
+				o.Albedo.r = saturate(sin(_Time*100));
+			}
+			else
+			{
+				o.Albedo = c;
+			}
+		    
 			
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
         }
         ENDCG
     }
